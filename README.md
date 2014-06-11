@@ -1,4 +1,4 @@
-# ampersand-input-view
+# ampersand-array-input-view
 
 A view module for intelligently rendering and validating inputs that should produce an array of values. Works well with [ampersand-form-view](ampersandjs/ampersand-form-view).
 
