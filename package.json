@@ -1,7 +1,7 @@
 {
   "name": "ampersand-array-input-view",
   "description": "A view module for intelligently rendering and validating inputs that should produce an array of values. Works well with ampersand-form-view.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Henrik Joreteg <henrik@andyet.net>",
   "bugs": {
     "url": "https://github.com/ampersandjs/ampersand-array-input-view/issues"
