@@ -8,7 +8,7 @@ It does the following:
 
 - Automatically shows/hides error messages based on tests
 - Exposes control for adding more input fields.
-- Exposes control removing all but first input fields.
+- Exposes control removing all but required number of input fields.
 - Will not show error messages pre-submit or it's never had a valid value. This lets people tab-through a form without triggering a bunch of error message.
 - Live-validates to always report if in valid state, but only shows messages when sane to do so.
 
@@ -44,7 +44,7 @@ var field = new InputView({
     // give it one, it will create one.
     el: document.getElementByID('field'),
     // whether or not this field is required
-    required: true, // true by default
+    numberRequired: 0, // number of answers needed
     // class to set on input when input is valid
     validClass: 'input-valid', // <- that's the default
     // type value to use for the input tag's type value
@@ -54,11 +54,12 @@ var field = new InputView({
     // Message to use if error is that it's required
     // but no value was set.
     requiredMessage: 'This field is required.',
-    // An array of test functions. They will be called
-    // in order with the current input value and you should
-    // write your test and return the error message to show
-    // if the test fails. It also gets called with the field
-    // instance as it's `this` context.
+    // An array of test functions that each input must pass.
+    // They will be called in order with the current input value 
+    // and you should write your test to return an error message
+    // if it fails and something falsey if it passes.
+    // Note that these tests get called with the field view instance as 
+    // it's `this` context.
     tests: [
         function (val) {
             if (val.length < 5) return "Must be 5+ characters.";

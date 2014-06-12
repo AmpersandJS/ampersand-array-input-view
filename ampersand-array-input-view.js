@@ -1,10 +1,9 @@
-var AmpView = require('ampersand-view');
+var View = require('ampersand-view');
 var _ = require('underscore');
 var FieldView = require('./lib/field-view');
-var FieldCollection = require('./lib/field-collection');
 
 
-module.exports = AmpView.extend({
+module.exports = View.extend({
     template: [
         '<label>',
             '<span role="label"></span>',
@@ -17,13 +16,20 @@ module.exports = AmpView.extend({
     ].join(''),
     initialize: function (spec) {
         if (!this.label) this.label = this.name;
-        this.setValue(this.value.length ? this.value : ['']);
+        this.fields = [];
         this.tests = spec.tests;
+        // calculate default value if not provided
+        var defaultVal = [];
+        var num = this.numberRequired;
+        while (num--) {
+            defaultVal.push('');
+        }
+        if (!this.value.length) this.value = defaultVal;
+        this.on('change:valid change:value', this.updateParent, this);
     },
     render: function () {
         this.renderWithTemplate();
-        this.renderCollection(this.fields, FieldView, this.getByRole('field-container'));
-        this.listenTo(this.fields, 'change:valid change:value add remove', this.handleCollectionChange);
+        this.setValue(this.value);
     },
     events: {
         'click [role=add-field]': 'handleAddFieldClick'
@@ -50,17 +56,14 @@ module.exports = AmpView.extend({
         name: ['string', true, ''],
         value: ['array', true, function () { return []; }],
         label: ['string', true, ''],
-        message: ['string', true, '']
+        message: ['string', true, ''],
+        placeholder: ['string', true, '']
     },
     session: {
-        testspassed: ['boolean', true, true],
         validClass: ['string', true, 'input-valid'],
         invalidClass: ['string', true, 'input-invalid'],
-        requiredMessage: ['string', true, 'Enter at least one item.'],
-        requried: ['boolean', true, true]
-    },
-    collections: {
-        fields: FieldCollection
+        numberRequired: ['number', true, 0],
+        fieldsValid: ['boolean', true, false]
     },
     derived: {
         fieldClass: {
@@ -70,13 +73,13 @@ module.exports = AmpView.extend({
             }
         },
         valid: {
-            deps: ['value', 'required', 'testspassed'],
+            deps: ['value', 'fieldsValid', 'numberRequired'],
             fn: function () {
-                var hasValues = !!this.value.length;
-                if (this.required && !hasValues) {
+                var numValues = this.value.length;
+                if (numValues < this.numberRequired) {
                     return false;
                 } else {
-                    return this.testspassed;
+                    return this.fieldsValid;
                 }
             }
         },
@@ -88,31 +91,60 @@ module.exports = AmpView.extend({
         }
     },
     setValue: function (arr) {
-        this.fields.set(arr.map(function (val) {
-            return {
-                value: val
-            };
-        }));
+        this.clearFields();
+        arr.forEach(this.addField, this);
+        this.update();
     },
-    handleCollectionChange: function () {
-        this.value = _.compact(this.fields.getValues());
-        this.runTests();
-    },
-    runTests: function () {
-        var message = '';
-        this.fields.some(function (field) {
-            return (this.tests || []).some(function (test) {
-                var message = test.call(field, this.value);
-                field.valid = !message;
-                message = message;
-                return message;
-            }, this);
-        }, this);
-        this.message = message;
-        if (!this.message) this.hasBeenValid = true;
+    beforeSubmit: function () {
+        this.fields.forEach(function (field) {
+            field.beforeSubmit();
+        });
     },
     handleAddFieldClick: function (e) {
         e.preventDefault();
-        this.fields.add({value: ''});
+        this.addField('');
+    },
+    addField: function (value) {
+        var field = new FieldView({
+            value: value,
+            parent: this,
+            required: false,
+            tests: this.tests,
+            placeholder: this.placeholder,
+            removable: this.fields.length >= this.numberRequired
+        });
+        field.render();
+        this.fields.push(field);
+        this.getByRole('field-container').appendChild(field.el);
+    },
+    clearFields: function () {
+        this.fields.forEach(function (field) {
+            field.remove();
+        });
+        this.fields = [];
+    },
+    removeField: function (field) {
+        this.fields = _.without(this.fields, field);
+        field.remove();
+        this.update();
+    },
+    update: function () {
+        var valid = true;
+        var value = this.fields.reduce(function (previous, field) {
+            if (field.value) previous.push(field.value);
+            if (!field.valid && valid) valid = false;
+            return previous;
+        }, []);
+        this.set({
+            value: value,
+            fieldsValid: valid
+        });
+    },
+    updateParent: function () {
+        if (this.parent) this.parent.update(this);
+    },
+    requiredMessage: function () {
+        var plural = this.numberRequired > 1;
+        return 'Enter at least ' + this.numberRequired + ' item' + (plural ? 's.' : '.');
     }
 });
