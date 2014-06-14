@@ -20,7 +20,8 @@ module.exports = View.extend({
         this.tests = spec.tests;
         // calculate default value if not provided
         var defaultVal = [];
-        var num = this.numberRequired;
+        // make sure there's at least one
+        var num = this.numberRequired || 1;
         while (num--) {
             defaultVal.push('');
         }
@@ -111,7 +112,7 @@ module.exports = View.extend({
             required: false,
             tests: this.tests,
             placeholder: this.placeholder,
-            removable: this.fields.length >= this.numberRequired
+            removable: this.fields.length >= (this.numberRequired || 1)
         });
         field.render();
         this.fields.push(field);
