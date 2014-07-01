@@ -8,15 +8,22 @@
   },
   "dependencies": {
     "ampersand-collection": "~1.3.1",
-    "ampersand-input-view": "^1.1.0",
+    "ampersand-input-view": "^1.2.3",
     "ampersand-state": "~4.2.2",
     "ampersand-view": "~5.1.7",
+    "function-bind": "^0.1.0",
     "jshint": "~2.5.1",
     "precommit-hook": "~1.0.2",
     "underscore": "~1.6.0"
   },
   "devDependencies": {
-    "precommit-hook": "~1.0.2"
+    "ampersand-form-view": "^1.0.0",
+    "beefy": "^2.0.2",
+    "precommit-hook": "~1.0.2",
+    "run-browser": "^1.3.1",
+    "tap-spec": "^0.2.0",
+    "tape": "^2.13.3",
+    "tape-run": "^0.1.1"
   },
   "homepage": "https://github.com/ampersandjs/ampersand-array-input-view",
   "keywords": [
@@ -29,5 +36,11 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/ampersandjs/ampersand-array-input-view"
+  },
+  "scripts": {
+    "validate": "jshint .",
+    "start": "run-browser test/index.js",
+    "test": "browserify test/index.js | tape-run | tap-spec",
+    "demo": "beefy demo.js"
   }
 }

@@ -9,8 +9,8 @@ module.exports = View.extend({
             '<span role="label"></span>',
             '<div role="field-container"></div>',
             '<a role="add-field" class="add-input">add</a>',
-            '<div role="message-container" class="message message-below message-error">',
-                '<p role="message-text"></p>',
+            '<div role="main-message-container" class="message message-below message-error">',
+                '<p role="main-message-text"></p>',
             '</div>',
         '</label>'
     ].join(''),
@@ -18,19 +18,22 @@ module.exports = View.extend({
         if (!this.label) this.label = this.name;
         this.fields = [];
         this.tests = spec.tests;
+        this.type = spec.type || 'text';
         // calculate default value if not provided
         var defaultVal = [];
         // make sure there's at least one
-        var num = this.numberRequired || 1;
+        var num = this.minLength || 1;
         while (num--) {
             defaultVal.push('');
         }
         if (!this.value.length) this.value = defaultVal;
         this.on('change:valid change:value', this.updateParent, this);
-    },
-    render: function () {
         this.renderWithTemplate();
         this.setValue(this.value);
+    },
+    render: function () {
+        // auto rendered, no need for this, but we want to
+        // overwrite default
     },
     events: {
         'click [role=add-field]': 'handleAddFieldClick'
@@ -46,11 +49,15 @@ module.exports = View.extend({
         },
         'message': {
             type: 'text',
-            role: 'message-text'
+            role: 'main-message-text'
         },
         'showMessage': {
             type: 'toggle',
-            role: 'message-container'
+            role: 'main-message-container'
+        },
+        'canAdd': {
+            type: 'toggle',
+            role: 'add-field'
         }
     },
     props: {
@@ -58,13 +65,17 @@ module.exports = View.extend({
         value: ['array', true, function () { return []; }],
         label: ['string', true, ''],
         message: ['string', true, ''],
-        placeholder: ['string', true, '']
-    },
-    session: {
+        placeholder: ['string', true, ''],
+        requiredMessage: 'string',
         validClass: ['string', true, 'input-valid'],
         invalidClass: ['string', true, 'input-invalid'],
-        numberRequired: ['number', true, 0],
-        fieldsValid: ['boolean', true, false]
+        minLength: ['number', true, 0],
+        maxLength: ['number', true, 10],
+    },
+    session: {
+        shouldValidate: ['boolean', true, false],
+        fieldsValid: ['boolean', true, false],
+        fieldsRendered: ['number', true, 0]
     },
     derived: {
         fieldClass: {
@@ -74,24 +85,32 @@ module.exports = View.extend({
             }
         },
         valid: {
-            deps: ['value', 'fieldsValid', 'numberRequired'],
+            deps: ['requiredMet', 'fieldsValid'],
             fn: function () {
-                var numValues = this.value.length;
-                if (numValues < this.numberRequired) {
-                    return false;
-                } else {
-                    return this.fieldsValid;
-                }
+                return this.requiredMet && this.fieldsValid;
             }
         },
         showMessage: {
-            deps: ['hasBeenValid', 'message'],
+            deps: ['valid', 'shouldValidate', 'message'],
             fn: function () {
-                return !!(this.hasBeenValid && this.message);
+                return !!(this.shouldValidate && this.message && !this.valid);
+            }
+        },
+        canAdd: {
+            deps: ['maxLength', 'fieldsRendered'],
+            fn: function () {
+                return this.fieldsRendered < this.maxLength;
+            }
+        },
+        requiredMet: {
+            deps: ['value', 'minLength'],
+            fn: function () {
+                return this.value.length > this.minLength;
             }
         }
     },
     setValue: function (arr) {
+        if (arr.length > this.maxLength) throw Error('Field value length greater than maxLength setting');
         this.clearFields();
         arr.forEach(this.addField, this);
         this.update();
@@ -100,21 +119,36 @@ module.exports = View.extend({
         this.fields.forEach(function (field) {
             field.beforeSubmit();
         });
+        this.shouldValidate = true;
+        if (!this.valid && !this.requiredMet) {
+            this.message = this.requiredMessage || this.getRequiredMessage();
+        }
     },
     handleAddFieldClick: function (e) {
         e.preventDefault();
         this.addField('');
     },
     addField: function (value) {
+        var self = this;
+        var firstField = this.fields.length === 0;
+        var removable = function () {
+            if (firstField) return false;
+            if (self.fields.length >= (self.minLength || 1)) {
+                return true;
+            }
+            return false;
+        }();
         var field = new FieldView({
             value: value,
             parent: this,
             required: false,
             tests: this.tests,
             placeholder: this.placeholder,
-            removable: this.fields.length >= (this.numberRequired || 1)
+            removable: removable,
+            type: this.type
         });
         field.render();
+        this.fieldsRendered += 1;
         this.fields.push(field);
         this.getByRole('field-container').appendChild(field.el);
     },
@@ -123,10 +157,12 @@ module.exports = View.extend({
             field.remove();
         });
         this.fields = [];
+        this.fieldsRendered = 0;
     },
     removeField: function (field) {
         this.fields = _.without(this.fields, field);
         field.remove();
+        this.fieldsRendered -= 1;
         this.update();
     },
     update: function () {
@@ -144,8 +180,8 @@ module.exports = View.extend({
     updateParent: function () {
         if (this.parent) this.parent.update(this);
     },
-    requiredMessage: function () {
-        var plural = this.numberRequired > 1;
-        return 'Enter at least ' + this.numberRequired + ' item' + (plural ? 's.' : '.');
+    getRequiredMessage: function () {
+        var plural = this.minLength > 1;
+        return 'Enter at least ' + (this.minLength || 1) + ' item' + (plural ? 's.' : '.');
     }
 });
