@@ -2,8 +2,6 @@
 
 A view module for intelligently rendering and validating inputs that should produce an array of values. Works well with [ampersand-form-view](ampersandjs/ampersand-form-view).
 
-**still a bit broken, just saving progress**
-
 It does the following:
 
 - Automatically shows/hides error messages based on tests
@@ -15,24 +13,33 @@ It does the following:
 ## install
 
 ```
-npm install ampersand-input-view
+npm install ampersand-array-input-view
 ```
 
 ## example
 
+The *only* required attribute is a name. Everything else is optional.
+
 ```javascript
 var InputView = require('ampersand-array-input-view');
+
 
 var field = new InputView({
     // form input `name`
     name: 'client_name',
-    // You can replace the built-in template with your own.
+    // You can replace the built-in template for the parent item
     // just give it an html string. Make sure it has a single "root" element that contains:
-    //  - an `<input>` element
+    //  - an element with a `role="label"` attribute
+    //  - an element with a `role="fieldContainer"` this is where individual fields go
+    //  - an element with a `role="main-message-container"` attribute (this we'll show/hide)
+    //  - an elememt with a `role="main-message-text"` attribute (where message text goes for error)
+    template: // some HTML string,
+    // Template for individual view. It should be a string of HTML
+    // Make sure it has a single "root" element that contains
     //  - an element with a `role="label"` attribute
     //  - an element with a `role="message-container"` attribute (this we'll show/hide)
     //  - an elememt with a `role="message-text"` attribute (where message text goes for error)
-    template: // some HTML string
+    fieldTemplate // HTML string
     // Label name
     label: 'App Name',
     // Optional placeholder attribute
@@ -43,8 +50,10 @@ var field = new InputView({
     // replaced by this view. If you don't
     // give it one, it will create one.
     el: document.getElementByID('field'),
-    // whether or not this field is required
-    numberRequired: 0, // number of answers needed
+    // use min/max length to set how many answers
+    // are required
+    minLength: 0,
+    maxLength: 10,
     // class to set on input when input is valid
     validClass: 'input-valid', // <- that's the default
     // type value to use for the input tag's type value
@@ -73,6 +82,10 @@ var field = new InputView({
 document.querySelector('form').appendChild(field.el);
 
 ```
+
+## browser support
+
+[![testling badge](https://ci.testling.com/AmpersandJS/ampersand-array-input-view.png)](https://ci.testling.com/AmpersandJS/ampersand-array-input-view)
 
 ## credits
 

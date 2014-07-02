@@ -1,24 +1,31 @@
 var View = require('ampersand-view');
 var _ = require('underscore');
 var FieldView = require('./lib/field-view');
+var defaultTemplate = [
+    '<div>',
+        '<span role="label"></span>',
+        '<div role="field-container"></div>',
+        '<a role="add-field" class="add-input">add</a>',
+        '<div role="main-message-container" class="message message-below message-error">',
+            '<p role="main-message-text"></p>',
+        '</div>',
+    '</div>'
+].join('');
+var defaultFieldTemplate = [
+    '<label>',
+        '<input>',
+        '<div role="message-container" class="message message-below message-error">',
+            '<p role="message-text"></p>',
+        '</div>',
+        '<a role="remove-field">remove</a>',
+    '</label>'
+].join('');
 
 
 module.exports = View.extend({
-    template: [
-        '<label>',
-            '<span role="label"></span>',
-            '<div role="field-container"></div>',
-            '<a role="add-field" class="add-input">add</a>',
-            '<div role="main-message-container" class="message message-below message-error">',
-                '<p role="main-message-text"></p>',
-            '</div>',
-        '</label>'
-    ].join(''),
-    initialize: function (spec) {
+    initialize: function () {
         if (!this.label) this.label = this.name;
         this.fields = [];
-        this.tests = spec.tests;
-        this.type = spec.type || 'text';
         // calculate default value if not provided
         var defaultVal = [];
         // make sure there's at least one
@@ -28,12 +35,13 @@ module.exports = View.extend({
         }
         if (!this.value.length) this.value = defaultVal;
         this.on('change:valid change:value', this.updateParent, this);
-        this.renderWithTemplate();
-        this.setValue(this.value);
+        this.render();
     },
     render: function () {
-        // auto rendered, no need for this, but we want to
-        // overwrite default
+        if (this.rendered) return;
+        this.renderWithTemplate();
+        this.setValue(this.value);
+        this.rendered = true;
     },
     events: {
         'click [role=add-field]': 'handleAddFieldClick'
@@ -71,11 +79,16 @@ module.exports = View.extend({
         invalidClass: ['string', true, 'input-invalid'],
         minLength: ['number', true, 0],
         maxLength: ['number', true, 10],
+        tests: ['array', true, function () { return []; }],
+        template: ['string', true, defaultTemplate],
+        fieldTemplate: ['string', true, defaultFieldTemplate],
+        type: ['text', true, 'text']
     },
     session: {
         shouldValidate: ['boolean', true, false],
         fieldsValid: ['boolean', true, false],
-        fieldsRendered: ['number', true, 0]
+        fieldsRendered: ['number', true, 0],
+        rendered: ['boolean', true, false]
     },
     derived: {
         fieldClass: {
@@ -126,7 +139,8 @@ module.exports = View.extend({
     },
     handleAddFieldClick: function (e) {
         e.preventDefault();
-        this.addField('');
+        var field = this.addField('');
+        field.input.focus();
     },
     addField: function (value) {
         var self = this;
@@ -138,7 +152,7 @@ module.exports = View.extend({
             }
             return false;
         }();
-        var field = new FieldView({
+        var initOptions = {
             value: value,
             parent: this,
             required: false,
@@ -146,11 +160,14 @@ module.exports = View.extend({
             placeholder: this.placeholder,
             removable: removable,
             type: this.type
-        });
+        };
+        var field = new FieldView(initOptions);
+        field.template = this.fieldTemplate;
         field.render();
         this.fieldsRendered += 1;
         this.fields.push(field);
         this.getByRole('field-container').appendChild(field.el);
+        return field;
     },
     clearFields: function () {
         this.fields.forEach(function (field) {

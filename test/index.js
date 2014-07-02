@@ -16,7 +16,7 @@ function isHidden(el) {
 
 test('basic init', function (t) {
     var input = new InputView({name: 'hi'});
-    t.equal(input.el.tagName, 'LABEL');
+    t.equal(input.el.tagName, 'DIV');
     t.ok(input.el.querySelector('label'));
     t.equal(input.el.querySelectorAll('input').length, 1);
     t.end();
