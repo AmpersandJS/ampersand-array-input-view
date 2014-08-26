@@ -14,6 +14,7 @@
   "devDependencies": {
     "ampersand-form-view": "^2.0.0",
     "beefy": "^2.0.2",
+    "browserify": "^5.10.1",
     "function-bind": "^0.1.0",
     "jshint": "~2.5.1",
     "precommit-hook": "~1.0.2",
