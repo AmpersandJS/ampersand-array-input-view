@@ -29,16 +29,16 @@ var field = new InputView({
     name: 'client_name',
     // You can replace the built-in template for the parent item
     // just give it an html string. Make sure it has a single "root" element that contains:
-    //  - an element with a `role="label"` attribute
-    //  - an element with a `role="fieldContainer"` this is where individual fields go
-    //  - an element with a `role="main-message-container"` attribute (this we'll show/hide)
-    //  - an elememt with a `role="main-message-text"` attribute (where message text goes for error)
+    //  - an element with a `data-hook="label"` attribute
+    //  - an element with a `data-hook="fieldContainer"` this is where individual fields go
+    //  - an element with a `data-hook="main-message-container"` attribute (this we'll show/hide)
+    //  - an elememt with a `data-hook="main-message-text"` attribute (where message text goes for error)
     template: // some HTML string,
     // Template for individual view. It should be a string of HTML
     // Make sure it has a single "root" element that contains
-    //  - an element with a `role="label"` attribute
-    //  - an element with a `role="message-container"` attribute (this we'll show/hide)
-    //  - an elememt with a `role="message-text"` attribute (where message text goes for error)
+    //  - an element with a `data-hook="label"` attribute
+    //  - an element with a `data-hook="message-container"` attribute (this we'll show/hide)
+    //  - an elememt with a `data-hook="message-text"` attribute (where message text goes for error)
     fieldTemplate // HTML string
     // Label name
     label: 'App Name',
