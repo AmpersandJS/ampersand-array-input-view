@@ -15,7 +15,7 @@ var input = new ArrayInput({
 });
 
 var form = document.createElement('form');
-form.innerHTML = '<div role="field-container"></div><input type="submit">';
+form.innerHTML = '<div data-hook="field-container"></div><input type="submit">';
 
 var formView = new FormView({
     el: form,

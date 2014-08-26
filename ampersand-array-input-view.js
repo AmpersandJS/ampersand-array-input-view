@@ -3,21 +3,21 @@ var _ = require('underscore');
 var FieldView = require('./lib/field-view');
 var defaultTemplate = [
     '<div>',
-        '<span role="label"></span>',
-        '<div role="field-container"></div>',
-        '<a role="add-field" class="add-input">add</a>',
-        '<div role="main-message-container" class="message message-below message-error">',
-            '<p role="main-message-text"></p>',
+        '<span data-hook="label"></span>',
+        '<div data-hook="field-container"></div>',
+        '<a data-hook="add-field" class="add-input">add</a>',
+        '<div data-hook="main-message-container" class="message message-below message-error">',
+            '<p data-hook="main-message-text"></p>',
         '</div>',
     '</div>'
 ].join('');
 var defaultFieldTemplate = [
     '<label>',
         '<input>',
-        '<div role="message-container" class="message message-below message-error">',
-            '<p role="message-text"></p>',
+        '<div data-hook="message-container" class="message message-below message-error">',
+            '<p data-hook="message-text"></p>',
         '</div>',
-        '<a role="remove-field">remove</a>',
+        '<a data-hook="remove-field">remove</a>',
     '</label>'
 ].join('');
 
@@ -44,7 +44,7 @@ module.exports = View.extend({
         this.rendered = true;
     },
     events: {
-        'click [role=add-field]': 'handleAddFieldClick'
+        'click [data-hook~=add-field]': 'handleAddFieldClick'
     },
     bindings: {
         'name': {
@@ -53,19 +53,19 @@ module.exports = View.extend({
             name: 'name'
         },
         'label': {
-            role: 'label'
+            hook: 'label'
         },
         'message': {
             type: 'text',
-            role: 'main-message-text'
+            hook: 'main-message-text'
         },
         'showMessage': {
             type: 'toggle',
-            role: 'main-message-container'
+            hook: 'main-message-container'
         },
         'canAdd': {
             type: 'toggle',
-            role: 'add-field'
+            hook: 'add-field'
         }
     },
     props: {
@@ -166,7 +166,7 @@ module.exports = View.extend({
         field.render();
         this.fieldsRendered += 1;
         this.fields.push(field);
-        this.getByRole('field-container').appendChild(field.el);
+        this.queryByHook('field-container').appendChild(field.el);
         return field;
     },
     clearFields: function () {
