@@ -1,5 +1,7 @@
 var View = require('ampersand-view');
-var _ = require('underscore');
+var _ = {
+    without: require('lodash.without')
+};
 var FieldView = require('./lib/field-view');
 var defaultTemplate = [
     '<div>',

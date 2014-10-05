@@ -9,7 +9,7 @@
   "dependencies": {
     "ampersand-input-view": "^2.0.0",
     "ampersand-view": "^7.0.0",
-    "underscore": "1.6.0"
+    "lodash.without": "^2.4.1"
   },
   "devDependencies": {
     "ampersand-form-view": "^2.0.0",
