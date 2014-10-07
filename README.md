@@ -25,7 +25,7 @@ var InputView = require('ampersand-array-input-view');
 
 
 var field = new InputView({
-    // form input `name`
+    // form input's `name` attribute
     name: 'client_name',
     // You can replace the built-in template for the parent item
     // just give it an html string. Make sure it has a single "root" element that contains:
@@ -44,9 +44,9 @@ var field = new InputView({
     label: 'App Name',
     // Optional placeholder attribute
     placeholder: 'My Awesome App',
-    // optinal intial value if it has one
+    // optional intial value if it has one
     value: ['hello'],
-    // optional, this is the that will be 
+    // optional, this is the element that will be 
     // replaced by this view. If you don't
     // give it one, it will create one.
     el: document.getElementByID('field'),
