@@ -34,12 +34,12 @@ var field = new InputView({
     //  - an element with a `data-hook="main-message-container"` attribute (this we'll show/hide)
     //  - an elememt with a `data-hook="main-message-text"` attribute (where message text goes for error)
     template: // some HTML string,
-    // Template for individual view. It should be a string of HTML
-    // Make sure it has a single "root" element that contains
+    // InputView for individual view. Should ahere to the ampersand input view conventions
+    // Make sure it's template has a single "root" element that contains
     //  - an element with a `data-hook="label"` attribute
     //  - an element with a `data-hook="message-container"` attribute (this we'll show/hide)
     //  - an elememt with a `data-hook="message-text"` attribute (where message text goes for error)
-    fieldTemplate // HTML string
+    fieldView: // View class
     // Label name
     label: 'App Name',
     // Optional placeholder attribute
