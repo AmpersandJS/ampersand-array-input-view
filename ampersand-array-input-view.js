@@ -1,3 +1,4 @@
+/*$AMPERSAND_VERSION*/
 var View = require('ampersand-view');
 var _ = require('underscore');
 var FieldView = require('./lib/field-view');
