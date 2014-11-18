@@ -80,6 +80,18 @@ test('error message visibility', function (t) {
     t.end();
 });
 
+test('error message visibility with minimum length', function (t) {
+    var input = new InputView({
+        name: 'hi',
+        minLength: 0
+    });
+    var errorMessage = input.el.querySelector('[data-hook=main-message-container]');
+    t.ok(isHidden(errorMessage), 'error should be hidden to start');
+    input.beforeSubmit();
+    t.ok(isHidden(errorMessage), 'error should continue hidden');
+    t.end();
+});
+
 test('remove-field visibility', function (t) {
     var input = new InputView({
         name: 'hi',
