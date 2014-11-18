@@ -80,7 +80,7 @@ test('error message visibility', function (t) {
     t.end();
 });
 
-test('error message visibility with minimum length', function (t) {
+test('error message visibility with 0 minimum length', function (t) {
     var input = new InputView({
         name: 'hi',
         minLength: 0
