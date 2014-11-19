@@ -119,7 +119,7 @@ module.exports = View.extend({
         requiredMet: {
             deps: ['value', 'minLength'],
             fn: function () {
-                return this.value.length > this.minLength;
+                return this.value.length >= this.minLength;
             }
         }
     },
