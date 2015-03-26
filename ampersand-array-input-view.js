@@ -1,6 +1,6 @@
 /*$AMPERSAND_VERSION*/
 var View = require('ampersand-view');
-var _ = require('underscore');
+var without = require('lodash.without');
 var FieldView = require('./lib/field-view');
 var defaultTemplate = [
     '<div>',
@@ -178,7 +178,7 @@ module.exports = View.extend({
         this.fieldsRendered = 0;
     },
     removeField: function (field) {
-        this.fields = _.without(this.fields, field);
+        this.fields = without(this.fields, field);
         field.remove();
         this.fieldsRendered -= 1;
         this.update();

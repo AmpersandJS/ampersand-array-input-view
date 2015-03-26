@@ -15,7 +15,8 @@
     "ampersand-input-view": "^2.0.0",
     "ampersand-version": "^1.0.0",
     "ampersand-view": "^7.0.0",
-    "underscore": "1.6.0"
+    "lodash.assign": "^3.0.0",
+    "lodash.without": "^3.1.0"
   },
   "devDependencies": {
     "ampersand-form-view": "^2.0.0",
