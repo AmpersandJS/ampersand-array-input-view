@@ -1,3 +1,4 @@
+/*$AMPERSAND_VERSION*/
 var View = require('ampersand-view');
 var without = require('lodash.without');
 var FieldView = require('./lib/field-view');
@@ -118,7 +119,7 @@ module.exports = View.extend({
         requiredMet: {
             deps: ['value', 'minLength'],
             fn: function () {
-                return this.value.length > this.minLength;
+                return this.value.length >= this.minLength;
             }
         }
     },
