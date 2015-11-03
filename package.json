@@ -47,7 +47,11 @@
     "start": "run-browser test/index.js",
     "test": "browserify test/index.js | tape-run -b phantom | tap-spec",
     "demo": "beefy demo.js",
-    "lint": "jshint ."
+    "lint": "jshint .",
+    "preversion": "git checkout master && git pull && npm ls",
+    "publish-patch": "npm run preversion && npm version patch && git push origin master --tags && npm publish",
+    "publish-minor": "npm run preversion && npm version minor && git push origin master --tags && npm publish",
+    "publish-major": "npm run preversion && npm version major && git push origin master --tags && npm publish"
   },
   "testling": {
     "files": "test/*.js",
