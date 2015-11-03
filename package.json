@@ -44,7 +44,6 @@
     "url": "git://github.com/ampersandjs/ampersand-array-input-view"
   },
   "scripts": {
-    "validate": "jshint .",
     "start": "run-browser test/index.js",
     "test": "browserify test/index.js | tape-run -b phantom | tap-spec",
     "demo": "beefy demo.js",
@@ -68,7 +67,6 @@
   },
   "pre-commit": [
     "lint",
-    "validate",
     "test"
   ]
 }
