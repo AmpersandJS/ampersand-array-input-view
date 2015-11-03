@@ -50,7 +50,7 @@ var field = new InputView({
     placeholder: 'My Awesome App',
     // optional intial value if it has one
     value: ['hello'],
-    // optional, this is the element that will be 
+    // optional, this is the element that will be
     // replaced by this view. If you don't
     // give it one, it will create one.
     el: document.getElementByID('field'),
@@ -68,10 +68,10 @@ var field = new InputView({
     // but no value was set.
     requiredMessage: 'This field is required.',
     // An array of test functions that each input must pass.
-    // They will be called in order with the current input value 
+    // They will be called in order with the current input value
     // and you should write your test to return an error message
     // if it fails and something falsey if it passes.
-    // Note that these tests get called with the field view instance as 
+    // Note that these tests get called with the field view instance as
     // it's `this` context.
     tests: [
         function (val) {
@@ -79,7 +79,7 @@ var field = new InputView({
         }
     ],
     // optional, you can pass in the parent view explicitly
-    parent:  someViewInstance 
+    parent:  someViewInstance
 });
 
 // append it somewhere or use it in side an ampersand-form-view
@@ -95,7 +95,9 @@ document.querySelector('form').appendChild(field.el);
 
 Created by [@HenrikJoreteg](http://twitter.com/henrikjoreteg).
 
+# changelog
+- 4.0.0 - bump major versions of most dependencies
+
 ## license
 
 MIT
-
