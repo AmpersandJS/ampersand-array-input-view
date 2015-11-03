@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "ampersand-form-view": "^2.0.0",
+    "ampersand-view-conventions": "^1.1.8",
     "beefy": "^2.0.2",
     "browserify": "^5.10.1",
     "function-bind": "^0.1.0",
