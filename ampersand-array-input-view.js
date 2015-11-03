@@ -83,7 +83,7 @@ module.exports = View.extend({
         tests: ['array', true, function () { return []; }],
         template: ['string', true, defaultTemplate],
         fieldTemplate: ['string', true, defaultFieldTemplate],
-        type: ['text', true, 'text']
+        type: ['string', true, 'text']
     },
     session: {
         shouldValidate: ['boolean', true, false],
