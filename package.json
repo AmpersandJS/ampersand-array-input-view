@@ -12,24 +12,24 @@
     "url": "https://github.com/ampersandjs/ampersand-array-input-view/issues"
   },
   "dependencies": {
-    "ampersand-input-view": "^2.0.0",
-    "ampersand-version": "^1.0.0",
-    "ampersand-view": "^7.0.0",
-    "lodash.assign": "^3.0.0",
-    "lodash.without": "^3.1.0"
+    "ampersand-input-view": "^5.0.0",
+    "ampersand-version": "^1.0.2",
+    "ampersand-view": "^9.0.0",
+    "lodash.assign": "^3.2.0",
+    "lodash.without": "^3.2.1"
   },
   "devDependencies": {
-    "ampersand-form-view": "^2.0.0",
+    "ampersand-form-view": "^5.1.1",
     "beefy": "^2.0.2",
-    "browserify": "^5.10.1",
-    "function-bind": "^0.1.0",
-    "jshint": "~2.5.1",
+    "browserify": "^12.0.1",
+    "function-bind": "^1.0.2",
+    "jshint": "^2.8.0",
     "phantomjs": "^1.9.7-15",
-    "precommit-hook": "~1.0.2",
-    "run-browser": "^1.3.1",
-    "tap-spec": "^0.2.0",
-    "tape": "^2.13.3",
-    "tape-run": "^0.1.1"
+    "precommit-hook": "^3.0.0",
+    "run-browser": "^2.0.2",
+    "tap-spec": "^4.1.0",
+    "tape": "^4.2.2",
+    "tape-run": "^2.1.0"
   },
   "homepage": "https://github.com/ampersandjs/ampersand-array-input-view",
   "keywords": [
@@ -47,7 +47,8 @@
     "validate": "jshint .",
     "start": "run-browser test/index.js",
     "test": "browserify test/index.js | tape-run -b phantom | tap-spec",
-    "demo": "beefy demo.js"
+    "demo": "beefy demo.js",
+    "lint": "jshint ."
   },
   "testling": {
     "files": "test/*.js",
@@ -64,5 +65,10 @@
       "iphone/6.0..latest",
       "android-browser/4.2..latest"
     ]
-  }
+  },
+  "pre-commit": [
+    "lint",
+    "validate",
+    "test"
+  ]
 }
