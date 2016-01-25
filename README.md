@@ -87,10 +87,6 @@ document.querySelector('form').appendChild(field.el);
 
 ```
 
-## browser support
-
-[![testling badge](https://ci.testling.com/AmpersandJS/ampersand-array-input-view.png)](https://ci.testling.com/AmpersandJS/ampersand-array-input-view)
-
 ## credits
 
 Created by [@HenrikJoreteg](http://twitter.com/henrikjoreteg).
