@@ -22,15 +22,12 @@
     "ampersand-form-view": "^5.1.1",
     "ampersand-view-conventions": "^1.1.8",
     "beefy": "^2.0.2",
-    "browserify": "^12.0.1",
     "function-bind": "^1.0.2",
     "jshint": "^2.8.0",
-    "phantomjs": "^1.9.7-15",
+    "phantomjs": "^1.9.19",
     "precommit-hook": "^3.0.0",
-    "run-browser": "^2.0.2",
-    "tap-spec": "^4.1.0",
     "tape": "^4.2.2",
-    "tape-run": "^1.1.0"
+    "zuul": "^3.9.0"
   },
   "homepage": "https://github.com/ampersandjs/ampersand-array-input-view",
   "keywords": [
@@ -45,8 +42,9 @@
     "url": "git://github.com/ampersandjs/ampersand-array-input-view"
   },
   "scripts": {
-    "start": "run-browser test/index.js",
-    "test": "browserify test/index.js | tape-run -b phantom | tap-spec",
+    "start": "zuul --local -- test/index.js",
+    "test": "zuul --phantom -- test/index.js",
+    "test-ci": "zuul -- test/index.js",
     "demo": "beefy demo.js",
     "lint": "jshint .",
     "preversion": "git checkout master && git pull && npm ls",
@@ -54,22 +52,6 @@
     "publish-minor": "npm run preversion && npm version minor && git push origin master --tags && npm publish",
     "publish-major": "npm run preversion && npm version major && git push origin master --tags && npm publish",
     "validate": "npm ls"
-  },
-  "testling": {
-    "files": "test/*.js",
-    "browsers": [
-      "ie/9..latest",
-      "firefox/17..latest",
-      "firefox/nightly",
-      "chrome/22..latest",
-      "chrome/canary",
-      "opera/12..latest",
-      "opera/next",
-      "safari/5.1..latest",
-      "ipad/6.0..latest",
-      "iphone/6.0..latest",
-      "android-browser/4.2..latest"
-    ]
   },
   "pre-commit": [
     "lint",
