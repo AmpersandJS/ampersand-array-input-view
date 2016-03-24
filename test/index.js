@@ -1,8 +1,9 @@
 /* global window*/
 var test = require('tape');
+var viewCompliance = require('ampersand-view-conventions');
 var InputView = require('../ampersand-array-input-view');
-if (!Function.prototype.bind) Function.prototype.bind = require('function-bind');
 
+if (!Function.prototype.bind) Function.prototype.bind = require('function-bind');
 
 function simClick(el) {
     var ev = document.createEvent('MouseEvent');
@@ -13,6 +14,10 @@ function simClick(el) {
 function isHidden(el) {
     return el.style.display === 'none';
 }
+
+viewCompliance.formField(test, InputView, {name: 'array-field'}, ['ok', 'friend']);
+
+viewCompliance.view(test, InputView, {name: 'array-field'});
 
 test('basic init', function (t) {
     var input = new InputView({name: 'hi'});
@@ -38,7 +43,7 @@ test('init with value', function (t) {
             value: ['ok', 'friend'],
             maxLength: 1
         });
-    }, 'Should throw if initted with to long of a value array');
+    }, 'Should throw if initted with too long of a value array');
     t.end();
 });
 
@@ -77,6 +82,18 @@ test('error message visibility', function (t) {
     t.ok(isHidden(errorMessage), 'error should be hidden to start');
     input.beforeSubmit();
     t.ok(!isHidden(errorMessage), 'error should be visible now');
+    t.end();
+});
+
+test('error message visibility with 0 minimum length', function (t) {
+    var input = new InputView({
+        name: 'hi',
+        minLength: 0
+    });
+    var errorMessage = input.el.querySelector('[data-hook=main-message-container]');
+    t.ok(isHidden(errorMessage), 'error should be hidden to start');
+    input.beforeSubmit();
+    t.ok(isHidden(errorMessage), 'error should continue hidden');
     t.end();
 });
 

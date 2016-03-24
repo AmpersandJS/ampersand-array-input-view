@@ -1,28 +1,33 @@
 {
   "name": "ampersand-array-input-view",
   "description": "A view module for intelligently rendering and validating inputs that should produce an array of values. Works well with ampersand-form-view.",
-  "version": "3.0.1",
+  "version": "5.0.0",
   "author": "Henrik Joreteg <henrik@andyet.net>",
+  "browserify": {
+    "transform": [
+      "ampersand-version"
+    ]
+  },
   "bugs": {
     "url": "https://github.com/ampersandjs/ampersand-array-input-view/issues"
   },
   "dependencies": {
-    "ampersand-input-view": "^2.0.0",
-    "ampersand-view": "^7.0.0",
-    "underscore": "1.6.0"
+    "ampersand-input-view": "^6.0.0",
+    "ampersand-version": "^1.0.2",
+    "ampersand-view": "^9.0.0",
+    "lodash.assign": "^3.2.0",
+    "lodash.without": "^3.2.1"
   },
   "devDependencies": {
-    "ampersand-form-view": "^2.0.0",
+    "ampersand-form-view": "^6.0.0",
+    "ampersand-view-conventions": "^1.1.8",
     "beefy": "^2.0.2",
-    "browserify": "^5.10.1",
-    "function-bind": "^0.1.0",
-    "jshint": "~2.5.1",
-    "phantomjs": "^1.9.7-15",
-    "precommit-hook": "~1.0.2",
-    "run-browser": "^1.3.1",
-    "tap-spec": "^0.2.0",
-    "tape": "^2.13.3",
-    "tape-run": "^0.1.1"
+    "function-bind": "^1.0.2",
+    "jshint": "^2.8.0",
+    "phantomjs": "^1.9.19",
+    "precommit-hook": "^3.0.0",
+    "tape": "^4.2.2",
+    "zuul": "^3.9.0"
   },
   "homepage": "https://github.com/ampersandjs/ampersand-array-input-view",
   "keywords": [
@@ -37,25 +42,19 @@
     "url": "git://github.com/ampersandjs/ampersand-array-input-view"
   },
   "scripts": {
-    "validate": "jshint .",
-    "start": "run-browser test/index.js",
-    "test": "browserify test/index.js | tape-run -b phantom | tap-spec",
-    "demo": "beefy demo.js"
+    "start": "zuul --local -- test/index.js",
+    "test": "zuul --phantom -- test/index.js",
+    "test-ci": "zuul -- test/index.js",
+    "demo": "beefy demo.js",
+    "lint": "jshint .",
+    "preversion": "git checkout master && git pull && npm ls",
+    "publish-patch": "npm run preversion && npm version patch && git push origin master --tags && npm publish",
+    "publish-minor": "npm run preversion && npm version minor && git push origin master --tags && npm publish",
+    "publish-major": "npm run preversion && npm version major && git push origin master --tags && npm publish",
+    "validate": "npm ls"
   },
-  "testling": {
-    "files": "test/*.js",
-    "browsers": [
-      "ie/9..latest",
-      "firefox/17..latest",
-      "firefox/nightly",
-      "chrome/22..latest",
-      "chrome/canary",
-      "opera/12..latest",
-      "opera/next",
-      "safari/5.1..latest",
-      "ipad/6.0..latest",
-      "iphone/6.0..latest",
-      "android-browser/4.2..latest"
-    ]
-  }
+  "pre-commit": [
+    "lint",
+    "test"
+  ]
 }
