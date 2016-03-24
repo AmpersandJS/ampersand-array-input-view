@@ -92,6 +92,7 @@ document.querySelector('form').appendChild(field.el);
 Created by [@HenrikJoreteg](http://twitter.com/henrikjoreteg).
 
 # changelog
+- 5.0.0 - update &-input-view dependency to 5.0.0
 - 4.0.0 - bump major versions of most dependencies
 
 ## license
