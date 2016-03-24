@@ -12,16 +12,6 @@ var defaultTemplate = [
         '</div>',
     '</div>'
 ].join('');
-var defaultFieldTemplate = [
-    '<label>',
-        '<input>',
-        '<div data-hook="message-container" class="message message-below message-error">',
-            '<p data-hook="message-text"></p>',
-        '</div>',
-        '<a data-hook="remove-field">remove</a>',
-    '</label>'
-].join('');
-
 
 module.exports = View.extend({
     initialize: function () {
@@ -82,8 +72,8 @@ module.exports = View.extend({
         maxLength: ['number', true, 10],
         tests: ['array', true, function () { return []; }],
         template: ['string', true, defaultTemplate],
-        fieldTemplate: ['string', true, defaultFieldTemplate],
-        type: ['string', true, 'text']
+        type: ['text', true, 'text'],
+        fieldView: ['any', true, function() { return FieldView; }]
     },
     session: {
         shouldValidate: ['boolean', true, false],
@@ -162,8 +152,7 @@ module.exports = View.extend({
             removable: removable,
             type: this.type
         };
-        var field = new FieldView(initOptions);
-        field.template = this.fieldTemplate;
+        var field = new this.fieldView(initOptions);
         field.render();
         this.fieldsRendered += 1;
         this.fields.push(field);
