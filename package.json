@@ -12,14 +12,14 @@
     "url": "https://github.com/ampersandjs/ampersand-array-input-view/issues"
   },
   "dependencies": {
-    "ampersand-input-view": "^5.0.0",
+    "ampersand-input-view": "^6.0.0",
     "ampersand-version": "^1.0.2",
     "ampersand-view": "^9.0.0",
     "lodash.assign": "^3.2.0",
     "lodash.without": "^3.2.1"
   },
   "devDependencies": {
-    "ampersand-form-view": "^5.1.1",
+    "ampersand-form-view": "^6.0.0",
     "ampersand-view-conventions": "^1.1.8",
     "beefy": "^2.0.2",
     "function-bind": "^1.0.2",
