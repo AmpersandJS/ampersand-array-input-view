@@ -1,7 +1,8 @@
 /*$AMPERSAND_VERSION*/
 var View = require('ampersand-view');
-var without = require('lodash.without');
+var without = require('lodash/without');
 var FieldView = require('./lib/field-view');
+
 var defaultTemplate = [
     '<div>',
         '<span data-hook="label"></span>',
@@ -12,6 +13,7 @@ var defaultTemplate = [
         '</div>',
     '</div>'
 ].join('');
+
 var defaultFieldTemplate = [
     '<label>',
         '<input>',
