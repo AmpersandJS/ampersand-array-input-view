@@ -23,7 +23,7 @@
     "beefy": "^2.0.2",
     "function-bind": "^1.0.2",
     "jshint": "^2.8.0",
-    "phantomjs": "^1.9.19",
+    "phantomjs-prebuilt": "^2.1.7",
     "precommit-hook": "^3.0.0",
     "tape": "^4.2.2",
     "zuul": "^3.9.0"
