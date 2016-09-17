@@ -3,8 +3,6 @@ var test = require('tape');
 var viewCompliance = require('ampersand-view-conventions');
 var InputView = require('../ampersand-array-input-view');
 
-if (!Function.prototype.bind) Function.prototype.bind = require('function-bind');
-
 function simClick(el) {
     var ev = document.createEvent('MouseEvent');
     ev.initMouseEvent('click', true, true, window, null, 0, 0, 0, 0, false, false, false, false, 0, null);

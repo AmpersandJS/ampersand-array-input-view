@@ -21,7 +21,6 @@
     "ampersand-form-view": "^6.0.0",
     "ampersand-view-conventions": "^1.1.8",
     "beefy": "^2.0.2",
-    "function-bind": "^1.0.2",
     "jshint": "^2.8.0",
     "phantomjs-prebuilt": "^2.1.7",
     "precommit-hook": "^3.0.0",
