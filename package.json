@@ -12,19 +12,17 @@
     "url": "https://github.com/ampersandjs/ampersand-array-input-view/issues"
   },
   "dependencies": {
-    "ampersand-input-view": "^6.0.0",
+    "ampersand-input-view": "^7.0.0",
     "ampersand-version": "^1.0.2",
-    "ampersand-view": "^9.0.0",
-    "lodash.assign": "^3.2.0",
-    "lodash.without": "^3.2.1"
+    "ampersand-view": "^10.0.1",
+    "lodash": "^4.15.0"
   },
   "devDependencies": {
     "ampersand-form-view": "^6.0.0",
     "ampersand-view-conventions": "^1.1.8",
     "beefy": "^2.0.2",
-    "function-bind": "^1.0.2",
     "jshint": "^2.8.0",
-    "phantomjs": "^1.9.19",
+    "phantomjs-prebuilt": "^2.1.7",
     "precommit-hook": "^3.0.0",
     "tape": "^4.2.2",
     "zuul": "^3.9.0"
