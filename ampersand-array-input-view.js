@@ -146,22 +146,12 @@ module.exports = View.extend({
         field.input.focus();
     },
     addField: function (value) {
-        var self = this;
-        var firstField = this.fields.length === 0;
-        var removable = function () {
-            if (firstField) return false;
-            if (self.fields.length >= (self.minLength || 1)) {
-                return true;
-            }
-            return false;
-        }();
         var initOptions = {
             value: value,
             parent: this,
             required: false,
             tests: this.tests,
             placeholder: this.placeholder,
-            removable: removable,
             type: this.type
         };
         var field = new FieldView(initOptions);
@@ -169,6 +159,7 @@ module.exports = View.extend({
         field.render();
         this.fieldsRendered += 1;
         this.fields.push(field);
+        this._setRemoveableFields();
         this.queryByHook('field-container').appendChild(field.el);
         return field;
     },
@@ -183,7 +174,14 @@ module.exports = View.extend({
         this.fields = without(this.fields, field);
         field.remove();
         this.fieldsRendered -= 1;
+        this._setRemoveableFields();
         this.update();
+    },
+    _setRemoveableFields: function () {
+        var removable = this.fields.length > (this.minLength || 1);
+        this.fields.forEach(function(field) {
+            field.removable = removable;
+        });
     },
     update: function () {
         var valid = true;

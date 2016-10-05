@@ -109,3 +109,34 @@ test('remove-field visibility', function (t) {
     document.body.removeChild(input.el);
     t.end();
 });
+
+test('remove-field visibility with minLength greater than 1', function (t) {
+    var input = new InputView({
+        name: 'hi',
+        maxLength: 3,
+        minLength: 2
+    });
+    document.body.appendChild(input.el);
+    var addButton = input.el.querySelector('[data-hook=add-field]');
+    
+    var i = 0;
+    for (i = 0; i < 2; i++) {
+	    t.ok(isHidden(input.el.querySelectorAll('[data-hook=remove-field]')[i]), 'field #' + i + '\'s remove button should be hidden to start');
+    }
+    
+    simClick(addButton);
+    
+    for (i = 0; i < 3; i++) {
+	    t.ok(!isHidden(input.el.querySelectorAll('[data-hook=remove-field]')[i]), 'field #' + i + '\'s remove button should be visible now');
+    }
+    
+    var removeButton = input.el.querySelector('[data-hook=remove-field]');
+    simClick(removeButton);
+    
+    for (i = 0; i < 2; i++) {
+        t.ok(isHidden(input.el.querySelectorAll('[data-hook=remove-field]')[i]), 'field #' + i + '\'s remove button should be hidden again');
+    }
+    
+    document.body.removeChild(input.el);
+    t.end();
+});
