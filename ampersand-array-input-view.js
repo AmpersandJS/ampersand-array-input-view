@@ -178,7 +178,7 @@ module.exports = View.extend({
         this.update();
     },
     _setRemoveableFields: function () {
-        var removable = this.fields.length > (this.minLength || 1);
+        var removable = this.fields.length > this.minLength;
         this.fields.forEach(function(field) {
             field.removable = removable;
         });

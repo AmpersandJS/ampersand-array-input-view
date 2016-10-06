@@ -65,6 +65,25 @@ test('clicking add/remove', function (t) {
     t.equal(input.el.querySelectorAll('input').length, 2, 'should have 2 fields');
     simClick(input.el.querySelectorAll('[data-hook=remove-field]')[1]);
     t.equal(input.el.querySelectorAll('input').length, 1, 'should have 1 fields');
+    document.body.removeChild(input.el);
+    t.end();
+});
+
+test('clicking remove with a minLength defined as 1', function (t) {
+     var input = new InputView({
+        name: 'hi',
+        minLength: 1
+    });
+    var addButton = input.el.querySelector('[data-hook=add-field]');
+    document.body.appendChild(input.el);
+    t.ok(addButton, 'make sure theres an add button');
+    t.equal(input.el.querySelectorAll('input').length, 1, 'should start with one');
+    t.ok(!isHidden(addButton));
+    simClick(addButton);
+    t.equal(input.el.querySelectorAll('input').length, 2, 'should be two after clicking add');
+    t.ok(!isHidden(addButton));
+    simClick(input.el.querySelectorAll('[data-hook=remove-field]')[1]);
+    t.equal(input.el.querySelectorAll('input').length, 1, 'should have 1 fields');
     t.ok(isHidden(input.el.querySelector('[data-hook=remove-field]')), 'should not have a remove button');
     document.body.removeChild(input.el);
     t.end();
