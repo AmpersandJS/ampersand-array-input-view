@@ -65,6 +65,25 @@ test('clicking add/remove', function (t) {
     t.equal(input.el.querySelectorAll('input').length, 2, 'should have 2 fields');
     simClick(input.el.querySelectorAll('[data-hook=remove-field]')[1]);
     t.equal(input.el.querySelectorAll('input').length, 1, 'should have 1 fields');
+    document.body.removeChild(input.el);
+    t.end();
+});
+
+test('clicking remove with a minLength defined as 1', function (t) {
+     var input = new InputView({
+        name: 'hi',
+        minLength: 1
+    });
+    var addButton = input.el.querySelector('[data-hook=add-field]');
+    document.body.appendChild(input.el);
+    t.ok(addButton, 'make sure theres an add button');
+    t.equal(input.el.querySelectorAll('input').length, 1, 'should start with one');
+    t.ok(!isHidden(addButton));
+    simClick(addButton);
+    t.equal(input.el.querySelectorAll('input').length, 2, 'should be two after clicking add');
+    t.ok(!isHidden(addButton));
+    simClick(input.el.querySelectorAll('[data-hook=remove-field]')[1]);
+    t.equal(input.el.querySelectorAll('input').length, 1, 'should have 1 fields');
     t.ok(isHidden(input.el.querySelector('[data-hook=remove-field]')), 'should not have a remove button');
     document.body.removeChild(input.el);
     t.end();
@@ -106,6 +125,37 @@ test('remove-field visibility', function (t) {
     t.ok(isHidden(input.el.querySelector('[data-hook=remove-field]')), 'should be hidden to start');
     simClick(addButton);
     t.ok(!isHidden(input.el.querySelectorAll('[data-hook=remove-field]')[1]), 'should be visible now');
+    document.body.removeChild(input.el);
+    t.end();
+});
+
+test('remove-field visibility with minLength greater than 1', function (t) {
+    var input = new InputView({
+        name: 'hi',
+        maxLength: 3,
+        minLength: 2
+    });
+    document.body.appendChild(input.el);
+    var addButton = input.el.querySelector('[data-hook=add-field]');
+    
+    var i = 0;
+    for (i = 0; i < 2; i++) {
+	    t.ok(isHidden(input.el.querySelectorAll('[data-hook=remove-field]')[i]), 'field #' + i + '\'s remove button should be hidden to start');
+    }
+    
+    simClick(addButton);
+    
+    for (i = 0; i < 3; i++) {
+	    t.ok(!isHidden(input.el.querySelectorAll('[data-hook=remove-field]')[i]), 'field #' + i + '\'s remove button should be visible now');
+    }
+    
+    var removeButton = input.el.querySelector('[data-hook=remove-field]');
+    simClick(removeButton);
+    
+    for (i = 0; i < 2; i++) {
+        t.ok(isHidden(input.el.querySelectorAll('[data-hook=remove-field]')[i]), 'field #' + i + '\'s remove button should be hidden again');
+    }
+    
     document.body.removeChild(input.el);
     t.end();
 });
